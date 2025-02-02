@@ -55,6 +55,18 @@ build CMakeFiles/HW5_PublicTransport.dir/main.cpp.o: CXX_COMPILER__HW5_PublicTra
   OBJECT_DIR = CMakeFiles/HW5_PublicTransport.dir
   OBJECT_FILE_DIR = CMakeFiles/HW5_PublicTransport.dir
 
+build CMakeFiles/HW5_PublicTransport.dir/Parser.cpp.o: CXX_COMPILER__HW5_PublicTransport_unscanned_Debug /Users/urielsofer/Library/CloudStorage/GoogleDrive-udavid10@gmail.com/Other$ computers/My$ Windows$ PC/CS$ Degree/Year$ 2/CPP/HWs/HW5-PublicTransport/Parser.cpp || cmake_object_order_depends_target_HW5_PublicTransport
+  DEP_FILE = CMakeFiles/HW5_PublicTransport.dir/Parser.cpp.o.d
+  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/HW5_PublicTransport.dir
+  OBJECT_FILE_DIR = CMakeFiles/HW5_PublicTransport.dir
+
+build CMakeFiles/HW5_PublicTransport.dir/InitialGraphTest.cpp.o: CXX_COMPILER__HW5_PublicTransport_unscanned_Debug /Users/urielsofer/Library/CloudStorage/GoogleDrive-udavid10@gmail.com/Other$ computers/My$ Windows$ PC/CS$ Degree/Year$ 2/CPP/HWs/HW5-PublicTransport/InitialGraphTest.cpp || cmake_object_order_depends_target_HW5_PublicTransport
+  DEP_FILE = CMakeFiles/HW5_PublicTransport.dir/InitialGraphTest.cpp.o.d
+  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/HW5_PublicTransport.dir
+  OBJECT_FILE_DIR = CMakeFiles/HW5_PublicTransport.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target HW5_PublicTransport
@@ -63,7 +75,7 @@ build CMakeFiles/HW5_PublicTransport.dir/main.cpp.o: CXX_COMPILER__HW5_PublicTra
 #############################################
 # Link the executable HW5_PublicTransport
 
-build HW5_PublicTransport: CXX_EXECUTABLE_LINKER__HW5_PublicTransport_Debug CMakeFiles/HW5_PublicTransport.dir/main.cpp.o
+build HW5_PublicTransport: CXX_EXECUTABLE_LINKER__HW5_PublicTransport_Debug CMakeFiles/HW5_PublicTransport.dir/main.cpp.o CMakeFiles/HW5_PublicTransport.dir/Parser.cpp.o CMakeFiles/HW5_PublicTransport.dir/InitialGraphTest.cpp.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk
   OBJECT_DIR = CMakeFiles/HW5_PublicTransport.dir
   POST_BUILD = :

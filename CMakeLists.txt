@@ -8,4 +8,9 @@ add_executable(HW5_PublicTransport
         EdgeNotFoundException.h
         Graph.h
         VertexNotFoundException.h
-        main.cpp)
+        main.cpp
+        VectorqUEUE.h
+        Parser.cpp
+        Parser.h
+        InitialGraphTest.cpp
+)

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 
+#include "VectorQueue.h"
 #include "EdgeAlreadyExistsException.h"
 #include "EdgeNotFoundException.h"
 #include "VertexNotFoundException.h"
@@ -89,10 +90,11 @@ private:
      */
     int getIndexForVertex(const VertexType& vertex) const;
 
-    vector<VertexType> perfromBFS(const VertexType& vertex) const;
+    vector<VertexType> performBFS(const VertexType& vertex) const;
 
-    vector<VertexType> perfromDFS(const VertexType& vertex) const;
+    vector<VertexType> performDFS(const VertexType& vertex) const;
 
+    void dfs_visit(const VertexType &u, vector<bool> &visited, vector<VertexType> &result) const;
 
 public:
     Graph() = default;
@@ -162,9 +164,10 @@ public:
     /**
      * Retrieves all vertices that can be reached from <i>vertex</i> using any number of edges.
      * @param vertex The starting vertex for the search.
+     * @param useBFS
      * @return A vector of all reachable vertices.
      */
-    vector<VertexType> getConnections(VertexType vertex) const;
+    vector<VertexType> getConnections(VertexType vertex, bool useBFS = true) const;
 
     /**
      * Retrieves all vertices that have a direct edge to <i>vertex</i>.
@@ -176,7 +179,13 @@ public:
     /**
      * Prints the adjacency matrix representation of the graph.
      */
+    void print(int) const;
+
+    /**
+     * Print vertex: vertex vertex
+     */
     void print() const;
+
 };
 
 
@@ -245,6 +254,7 @@ void Graph<VertexType, Weight>::addVertex(const VertexType& vertex)
     {
         row.resize(vertices.size(), Weight());
     }
+    updateIndexes();
 }
 
 template <class VertexType, class Weight>
@@ -325,14 +335,88 @@ vector<VertexType> Graph<VertexType, Weight>::getDirectSources(VertexType vertex
 }
 
 template <class VertexType, class Weight>
-vector<VertexType> Graph<VertexType, Weight>::getConnections(VertexType vertex) const
+vector<VertexType> Graph<VertexType, Weight>::getConnections(VertexType vertex, bool useBFS) const
 {
-    cerr << "Connections" << endl;
-    return vector<VertexType>();
+    vector<VertexType> result = useBFS ? performBFS(vertex) : performDFS(vertex);
+    result.erase(result.begin());
+    return result;
+}
+
+template<class VertexType, class Weight>
+vector<VertexType> Graph<VertexType, Weight>::performBFS(const VertexType &vertex) const
+{
+    const size_t startIndex = getIndexForVertex(vertex);
+
+    if (startIndex == static_cast<size_t>(-1))
+        return {};
+
+    vector<bool> visited(vertices.size(), false);
+
+    vector<VertexType> result;
+    VectorQueue<VertexType> queue;
+
+    visited[startIndex] = true;
+    queue.enqueue(vertex);
+    result.push_back(vertex); // Include starting vertex in the result
+
+    while (!queue.isEmpty())
+    {
+        VertexType currVertex = queue.dequeue();
+
+        for (const auto& neighbor : getDirectNeighbors(currVertex))
+        {
+            size_t neighborIndex = getIndexForVertex(neighbor);
+
+            if (!visited[neighborIndex])
+            {
+                visited[neighborIndex] = true;
+                queue.enqueue(neighbor);
+                result.push_back(neighbor);
+            }
+        }
+    }
+
+    return result;
+}
+
+template<class VertexType, class Weight>
+vector<VertexType> Graph<VertexType, Weight>::performDFS(const VertexType &vertex) const
+{
+    const size_t startIndex = getIndexForVertex(vertex);
+
+    if (startIndex == static_cast<size_t>(-1))
+        return {};
+
+    vector<bool> visited(vertices.size(), false);
+
+    vector<VertexType> result;
+
+    dfs_visit(vertex, visited, result);
+
+    return result;
 }
 
 template <class VertexType, class Weight>
-void Graph<VertexType, Weight>::print() const
+void Graph<VertexType, Weight>::dfs_visit(const VertexType &u, vector<bool> &visited, vector<VertexType> &result) const
+{
+    const size_t index = getIndexForVertex(u);
+
+    if (visited[index]) return;
+
+    visited[index] = true;
+    result.push_back(u);
+
+    for (const auto& neighbor : getDirectNeighbors(u))
+    {
+        if (!visited[getIndexForVertex(neighbor)])
+        {
+            dfs_visit(neighbor, visited, result);
+        }
+    }
+}
+
+template <class VertexType, class Weight>
+void Graph<VertexType, Weight>::print(int) const
 {
     cout << "Graph Representation:" << endl;
     cout << "Adjacency Matrix:" << endl;
@@ -350,6 +434,7 @@ void Graph<VertexType, Weight>::print() const
     cout << setw(colWidthInt) << "";
     for (const auto& v : vertices)
         cout << setw(colWidthInt) << v.vertex;
+
     // Print separation row
     cout << endl << setw(colWidthInt) << "" << setfill('-') << setw(vertices.size() * col_width) << "" << setfill(' ') << endl;
 
@@ -365,15 +450,25 @@ void Graph<VertexType, Weight>::print() const
 }
 
 template<class VertexType, class Weight>
-vector<VertexType> Graph<VertexType, Weight>::perfromBFS(const VertexType &vertex) const
+void Graph<VertexType, Weight>::print() const
 {
+    for (int i = 0; i < vertices.size(); ++i)
+    {
+        vector<VertexType> neighbor = getDirectNeighbors(vertices[i].vertex);
 
-}
+        cout << vertices[i].vertex << ": ";
 
-template<class VertexType, class Weight>
-vector<VertexType> Graph<VertexType, Weight>::perfromDFS(const VertexType &vertex) const
-{
+        if (neighbor.empty())
+            continue;
 
+
+        for (const auto& n : neighbor)
+        {
+            cout << n << " ";
+        }
+
+        cout << endl;
+    }
 }
 
 #endif //GRAPH_H
